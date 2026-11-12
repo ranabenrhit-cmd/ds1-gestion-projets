@@ -3,6 +3,7 @@ const express = require('express'); // jebna il mini framework express w hatineh
 const connectDB = require('./config/db'); // import mt3 il connection database
 const app = express(); //we use express to do an app
 app.use(express.json());//middleware hadher yst3mlou bch yefhem il body send in JSON form 
+app.use('/api/auth', require('./users/auth.routes'));
 app.get('/', (req, res) => {
   res.json({ message: 'API valide' });
 });// just route tajribiya chnthbtou illy server y5dm 
