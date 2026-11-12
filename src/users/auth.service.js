@@ -3,6 +3,7 @@
 const bcrypt = require('bcryptjs'); //bib pour hashage 
 const User = require('./user.model');//n3aytou lil model mtna illy 3mlneh
 const httpError = require('../utils/httpError');
+const jwt = require('jsonwebtoken');
 
 const inscrire = async (donnees) => {
 //async khtr lzmna nstanw rsltt w bch nst3mlou await
@@ -24,7 +25,7 @@ const inscrire = async (donnees) => {
   if (existe) {
     throw httpError(409, 'Ce login est déjà utilisé');
   }
-  
+
   const passwordCrypte = await bcrypt.hash(password, 10);//hashing mt3 il password 
   const user = await User.create({ nom, login, password: passwordCrypte, role });
   return {
@@ -36,4 +37,34 @@ const inscrire = async (donnees) => {
   };
 };
 
-module.exports = { inscrire };
+
+const connecter = async (donnees) => {
+  const { login, password } = donnees;
+
+  if (!login || !password) {
+    throw httpError(400, 'Le login et le mot de passe sont obligatoires');
+  }
+
+  const user = await User.findOne({ login });
+  if (!user) {
+    throw httpError(401, 'Login ou mot de passe incorrect');
+  }
+
+  const correct = await bcrypt.compare(String(password), user.password);
+  if (!correct) {
+    throw httpError(401, 'Login ou mot de passe incorrect');
+  }
+
+  const token = jwt.sign(
+    { id: user._id, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: '1d' }
+  );
+
+  return {
+    token,
+    user: { id: user._id, nom: user.nom, login: user.login, role: user.role },
+  };
+};
+
+module.exports = { inscrire, connecter };
