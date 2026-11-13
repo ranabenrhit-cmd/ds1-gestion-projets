@@ -10,4 +10,10 @@ const creerProjet = async (donnees, userId) => {
   return Project.create({ nom, description, statut, proprietaire: userId });
 };
 
-module.exports = { creerProjet };
+const listerProjets = async (user) => {
+    const filtre = user.role === 'manager' ? {} : { proprietaire: user.id };
+    return Project.find(filtre).populate('proprietaire', 'nom login');
+};
+
+
+module.exports = { creerProjet, listerProjets };

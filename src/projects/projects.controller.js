@@ -14,4 +14,13 @@ const create = async (req, res) => {
   }
 };
 
-module.exports = { create };
+const list = async (req, res) => {
+  try {
+    const projets = await projectsService.listerProjets(req.user);
+    res.status(200).json({ message: 'Liste des projets', res: projets });
+  } catch (error) {
+    envoyerErreur(res, error);
+  }
+};
+
+module.exports = { create, list};

@@ -8,4 +8,6 @@ router.use(auth);//proteger bil token
 
 router.post('/', projectsController.create);
 
+router.get('/', projectsController.list);
+
 module.exports = router;
