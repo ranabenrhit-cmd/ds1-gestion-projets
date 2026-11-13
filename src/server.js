@@ -5,6 +5,7 @@ const app = express(); //we use express to do an app
 app.use(express.json());//middleware hadher yst3mlou bch yefhem il body send in JSON form 
 app.use('/api/auth', require('./users/auth.routes'));
 app.use('/api/projects', require('./projects/projects.routes'));
+app.use('/api', require('./tasks/tasks.routes'));
 
 app.get('/', (req, res) => {
   res.json({ message: 'API valide' });

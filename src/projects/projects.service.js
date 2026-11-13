@@ -71,4 +71,4 @@ const supprimerProjet = async (id, user) => {
 
 
 
-module.exports = { creerProjet, listerProjets, chercherProjet, modifierProjet, supprimerProjet, };
+module.exports = { creerProjet, listerProjets, chercherProjet, modifierProjet, supprimerProjet, trouverProjetAutorise, };
