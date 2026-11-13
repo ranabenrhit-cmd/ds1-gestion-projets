@@ -13,13 +13,13 @@ const projectSchema = new mongoose.Schema(
     },
     proprietaire: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
+      ref: 'User', //il objectID hedheka mwjoud fi modele esmou user 
+      required: true,//khtr kol project lzm ykoun 3ndou owner
     },
     statut: {
       type: String,
       enum: ['en cours', 'terminé', 'en pause'],
-      default: 'en cours',
+      default: 'en cours',// kn mahatinech statut tt7at par defaut "en cours" 
     },
   },
   {

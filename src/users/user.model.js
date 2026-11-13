@@ -1,4 +1,4 @@
-/*9bal mn3mlou inscrit il ay 3bd il base lzm t3rf li chnw ychanah 
+/*9bal mn3mlou inscrit il ay 3bd il base lzm t3rf li chnw ychabah 
 a user chnouma les champs illy 3ndou chnwa illy obligatoire fihom 
 chnouma les valeurs illy nsmhou bihom 3la hedheka bch n3mlou modéle 
 dwrou y3ml description lil structure mt3 a user c' l'equivalent de l'entité
