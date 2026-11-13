@@ -14,6 +14,7 @@ const create = async (req, res) => {
   }
 };
 
+//list projects
 const list = async (req, res) => {
   try {
     const projets = await projectsService.listerProjets(req.user);
@@ -23,4 +24,38 @@ const list = async (req, res) => {
   }
 };
 
-module.exports = { create, list};
+//get a project
+// GET /api/projects/:id
+const getOne = async (req, res) => {
+  try {
+    const projet = await projectsService.chercherProjet(req.params.id, req.user);
+    res.status(200).json({ message: 'Projet trouvé', res: projet });
+  } catch (error) {
+    envoyerErreur(res, error);
+  }
+};
+
+//update a project
+// PUT /api/projects/:id
+const update = async (req, res) => {
+  try {
+    const projet = await projectsService.modifierProjet(req.params.id, req.body || {}, req.user);
+    res.status(200).json({ message: 'Projet modifié', res: projet });
+  } catch (error) {
+    envoyerErreur(res, error);
+  }
+};
+
+//delete a project 
+// DELETE /api/projects/:id
+const remove = async (req, res) => {
+  try {
+    const projet = await projectsService.supprimerProjet(req.params.id, req.user);
+    res.status(200).json({ message: 'Projet supprimé', res: projet });
+  } catch (error) {
+    envoyerErreur(res, error);
+  }
+};
+
+
+module.exports = { create, list, getOne, update, remove};
