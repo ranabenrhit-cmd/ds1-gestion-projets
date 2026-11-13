@@ -30,4 +30,13 @@ const me = (req, res) => {
   res.status(200).json({ message: 'Utilisateur connecté', res: req.user });
 };
 
-module.exports = { register, login, me };
+const listUsers = async (req, res) => {
+  try {
+    const users = await authService.listerUtilisateurs();
+    res.status(200).json({ message: 'Liste des utilisateurs', res: users });
+  } catch (error) {
+    res.status(error.status || 500).json({ message: error.message });
+  }
+};
+
+module.exports = { register, login, me, listUsers };

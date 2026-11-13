@@ -68,4 +68,8 @@ const connecter = async (donnees) => {
   };
 };
 
-module.exports = { inscrire, connecter };
+const listerUtilisateurs = async () => {
+  return User.find().select('-password');
+};
+
+module.exports = { inscrire, connecter, listerUtilisateurs };
