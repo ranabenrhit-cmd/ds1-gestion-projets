@@ -1,6 +1,7 @@
 const Project = require('./project.model');
 const httpError = require('../utils/httpError');
 const mongoose = require('mongoose');
+const Task = require('../tasks/task.model');
 
 //creation projet 
 const creerProjet = async (donnees, userId) => {
@@ -65,6 +66,7 @@ const modifierProjet = async (id, donnees, user) => {
 //delete project 
 const supprimerProjet = async (id, user) => {
   const projet = await trouverProjetAutorise(id, user);
+   await Task.deleteMany({ projet: projet._id }); //nfskhou il tasks illy tb3inou kol
   await projet.deleteOne();
   return projet;
 };

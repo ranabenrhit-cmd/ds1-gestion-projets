@@ -26,4 +26,35 @@ const list = async (req, res) => {
   }
 };
 
-module.exports = { create, list };
+// PUT /api/tasks/:id
+const update = async (req, res) => {
+  try {
+    const tache = await tasksService.modifierTache(req.params.id, req.body || {}, req.user);
+    res.status(200).json({ message: 'Tâche modifiée', res: tache });
+  } catch (error) {
+    envoyerErreur(res, error);
+  }
+};
+
+// DELETE /api/tasks/:id
+const remove = async (req, res) => {
+  try {
+    const tache = await tasksService.supprimerTache(req.params.id, req.user);
+    res.status(200).json({ message: 'Tâche supprimée', res: tache });
+  } catch (error) {
+    envoyerErreur(res, error);
+  }
+};
+
+// PATCH /api/tasks/:id/assign
+const assign = async (req, res) => {
+  try {
+    const { userId } = req.body || {};
+    const tache = await tasksService.affecterTache(req.params.id, userId);
+    res.status(200).json({ message: 'Tâche affectée', res: tache });
+  } catch (error) {
+    envoyerErreur(res, error);
+  }
+};
+
+module.exports = { create, list, update, remove, assign };
