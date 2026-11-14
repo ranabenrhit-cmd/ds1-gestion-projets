@@ -21,7 +21,7 @@ const create = async (req, res) => {
 // GET /api/projects/:projectId/tasks
 const list = async (req, res) => {
   try {
-    const taches = await tasksService.listerTaches(req.params.projectId, req.user);
+    const taches = await tasksService.listerTaches(req.params.projectId, req.user, req.query);
     res.status(200).json({ message: 'Liste des tâches', res: taches });
   } catch (error) {
     envoyerErreur(res, error);

@@ -4,6 +4,7 @@ const Project = require('../projects/project.model');
 const projectsService = require('../projects/projects.service');
 const User = require('../users/user.model');
 const httpError = require('../utils/httpError');
+const { echapper, construireTri } = require('../utils/requete');
 
 //creat Task
 const creerTache = async (projectId, donnees) => {
@@ -28,11 +29,22 @@ const creerTache = async (projectId, donnees) => {
 };
 
 //List Tasks 
-const listerTaches = async (projectId, user) => {
+const listerTaches = async (projectId, user, query = {}) => {
 
     await projectsService.trouverProjetAutorise(projectId, user);
 
-  return Task.find({ projet: projectId }).populate('assigneA', 'nom login');
+    const filtre = { projet: projectId };
+    if (query.search) {
+        filtre.titre = { $regex: echapper(query.search), $options: 'i' };
+    }
+
+    if (query.statut) {
+        filtre.statut = String(query.statut);
+    }
+
+    const tri = construireTri(query, ['titre', 'statut', 'deadline', 'createdAt'], 'createdAt');
+
+  return (await Task.find(filtre)).toSorted(tri).populate('assigneA', 'nom login');
 };
 
 //search a task by her id w njibou m3aha her project 
