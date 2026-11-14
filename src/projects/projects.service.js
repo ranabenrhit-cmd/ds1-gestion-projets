@@ -31,7 +31,7 @@ const listerProjets = async (user, query ={}) => {
 
     const tri = construireTri(query, ['nom', 'statut', 'createdAt'], 'createdAt');
 
-    return (await Project.find(filtre)).sort(tri).populate('proprietaire', 'nom login');
+    return Project.find(filtre).sort(tri).populate('proprietaire', 'nom login');
     //.populate(..) bch njibou biha info nom w login illy hatinehom mt3 il proprietaire khtr fi project 3ana kn l'id 
 };
 
