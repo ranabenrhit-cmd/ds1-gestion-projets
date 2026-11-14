@@ -6,6 +6,7 @@ const envoyerErreur = (res, error) => {
   res.status(status).json({ message: error.message });
 };
 
+//Creation Task
 // POST /api/projects/:projectId/tasks
 const create = async (req, res) => {
   try {
@@ -16,6 +17,7 @@ const create = async (req, res) => {
   }
 };
 
+//list tasks 
 // GET /api/projects/:projectId/tasks
 const list = async (req, res) => {
   try {
@@ -26,6 +28,7 @@ const list = async (req, res) => {
   }
 };
 
+//update task
 // PUT /api/tasks/:id
 const update = async (req, res) => {
   try {
@@ -36,6 +39,7 @@ const update = async (req, res) => {
   }
 };
 
+//delete a task
 // DELETE /api/tasks/:id
 const remove = async (req, res) => {
   try {
@@ -46,6 +50,7 @@ const remove = async (req, res) => {
   }
 };
 
+//assign a task to user 
 // PATCH /api/tasks/:id/assign
 const assign = async (req, res) => {
   try {

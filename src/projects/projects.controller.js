@@ -17,7 +17,7 @@ const create = async (req, res) => {
 //list projects
 const list = async (req, res) => {
   try {
-    const projets = await projectsService.listerProjets(req.user);
+    const projets = await projectsService.listerProjets(req.user, req.query);
     res.status(200).json({ message: 'Liste des projets', res: projets });
   } catch (error) {
     envoyerErreur(res, error);

@@ -2,6 +2,7 @@ const Project = require('./project.model');
 const httpError = require('../utils/httpError');
 const mongoose = require('mongoose');
 const Task = require('../tasks/task.model');
+const { echapper, construireTri } = require('../utils/requete');
 
 //creation projet 
 const creerProjet = async (donnees, userId) => {
@@ -14,12 +15,23 @@ const creerProjet = async (donnees, userId) => {
 };
 
 //the idea : mch ay user 3ndou ha9 ychouf il projects kol 
-const listerProjets = async (user) => {
+const listerProjets = async (user, query ={}) => {
     //hna est3mlna haja esmha Ternary Operator illy hiya tari9a mokhtasra lil if/else 
         // condition ? valeurSiVrai : valeurSiFaux
         // {} njibouhom kol mn3mlouch filtre sinn njibou hasb il id mt3 il user il mwjoud tw 
     const filtre = user.role === 'manager' ? {} : { proprietaire: user.id };
-    return Project.find(filtre).populate('proprietaire', 'nom login');
+
+    if (query.search) {
+        filtre.nom = { $regex: echapper(query.search), $options: 'i' };//sans tenir compte des majuscule et minuscule 
+    }
+
+    if (query.statut) {
+        filtre.statut = String(query.statut);
+    }
+
+    const tri = construireTri(query, ['nom', 'statut', 'createdAt'], 'createdAt');
+
+    return (await Project.find(filtre)).sort(tri).populate('proprietaire', 'nom login');
     //.populate(..) bch njibou biha info nom w login illy hatinehom mt3 il proprietaire khtr fi project 3ana kn l'id 
 };
 

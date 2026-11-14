@@ -5,6 +5,7 @@ const projectsService = require('../projects/projects.service');
 const User = require('../users/user.model');
 const httpError = require('../utils/httpError');
 
+//creat Task
 const creerTache = async (projectId, donnees) => {
 
     if (!mongoose.isValidObjectId(projectId)) {
@@ -26,7 +27,7 @@ const creerTache = async (projectId, donnees) => {
   return Task.create({ titre, description, statut, deadline, projet: projectId });
 };
 
-
+//List Tasks 
 const listerTaches = async (projectId, user) => {
 
     await projectsService.trouverProjetAutorise(projectId, user);
@@ -34,6 +35,7 @@ const listerTaches = async (projectId, user) => {
   return Task.find({ projet: projectId }).populate('assigneA', 'nom login');
 };
 
+//search a task by her id w njibou m3aha her project 
 const trouverTache = async (id) => {
   if (!mongoose.isValidObjectId(id)) {
     throw httpError(400, 'Identifiant de tâche invalide');
@@ -45,9 +47,11 @@ const trouverTache = async (id) => {
   return tache;
 };
 
+//nthabtou idha il user houa il owner of the project 
 const estProprietaire = (tache, user) =>
   tache.projet && tache.projet.proprietaire.toString() === user.id;
 
+//update a task : ya il proprietaire ya il manager 
 const modifierTache = async (id, donnees, user) => {
  const tache = await trouverTache(id);
 
@@ -58,6 +62,7 @@ const modifierTache = async (id, donnees, user) => {
 
  const { titre, description, statut, deadline } = donnees;
 
+ //nbdlou kn il hajet illy tb3thet 
  if (titre !== undefined) tache.titre = titre;
  if (description !== undefined) tache.description = description;
  if (statut !== undefined) tache.statut = statut;
@@ -65,9 +70,10 @@ const modifierTache = async (id, donnees, user) => {
 
  await tache.save();
 
- return tache.depopulate('projet');
+ return tache.depopulate('projet');//nrj3ou l'id brk mt3 il project m7chtnch b be9i il m3loumt 
 };
 
+// propietaire de projet ou manager 
 const supprimerTache = async (id, user) => {
   const tache = await trouverTache(id);
 
@@ -79,6 +85,7 @@ const supprimerTache = async (id, user) => {
   return tache.depopulate('projet');
 };
 
+//affect task to user , only the manager ( middleware authorize houa illy ythabt)
 const affecterTache = async (id, userId) => {
   const tache = await trouverTache(id);
 
@@ -94,6 +101,7 @@ const affecterTache = async (id, userId) => {
   tache.assigneA = userId;
   await tache.save();
 
+  // nom et login mt3 illy t3tlou il task 
   await tache.populate('assigneA', 'nom login');
   return tache.depopulate('projet');
 };
