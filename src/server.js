@@ -2,6 +2,8 @@ require('dotenv').config(); //trod les variables de configuration dispo fil proc
 const express = require('express'); // jebna il mini framework express w hatineh fi const samineha express bch t3awena n3mlou serveur w nst9blou les requetes (eq lil import fi NestJS)
 const connectDB = require('./config/db'); // import mt3 il connection database
 const app = express(); //we use express to do an app
+const { notFound, errorHandler } = require('./middlewares/errorHandler');
+
 app.use(express.json());//middleware hadher yst3mlou bch yefhem il body send in JSON form 
 app.use('/api/auth', require('./users/auth.routes'));
 app.use('/api/projects', require('./projects/projects.routes'));
@@ -10,6 +12,11 @@ app.use('/api', require('./tasks/tasks.routes'));
 app.get('/', (req, res) => {
   res.json({ message: 'API valide' });
 });// just route tajribiya chnthbtou illy server y5dm 
+
+//l'ordre compte express yparcouri les middlewares min fou9 illouta kn n7otouh 9bal bch yjwb notFound 404 3la ilkol
+app.use(notFound);
+app.use(errorHandler);
+
 connectDB().then(() => {//nknktiw bil base w b3d nhelou server bch hatta requete mtji 9bal ma mongoDB ykoun hadher
     app.listen(process.env.PORT, () => {
         console.log(`Serveur sur http://localhost:${process.env.PORT}`);
