@@ -44,7 +44,7 @@ const listerTaches = async (projectId, user, query = {}) => {
 
     const tri = construireTri(query, ['titre', 'statut', 'deadline', 'createdAt'], 'createdAt');
 
-  return (await Task.find(filtre)).toSorted(tri).populate('assigneA', 'nom login');
+  return Task.find(filtre).sort(tri).populate('assigneA', 'nom login');
 };
 
 //search a task by her id w njibou m3aha her project 
